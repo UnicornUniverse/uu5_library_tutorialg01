@@ -1,0 +1,138 @@
+{
+  "product": "uu_jokesg01",
+  "version": "0.1.0",
+  "license": "License Commercial",
+  "description": {
+    "en": "The uuJokes library contains reference components for educational purposes.",
+    "cs": "Knihovna uuJokes obsahuje referenční komponenty pro vzdělávací účely."
+  },
+  "docUri": "https://uuapp.plus4u.net/uu-bookkitg01-main/78462435-71f8d7b5cfdc4336b0abfe47b3cb237b/book/page?code=home",
+  "flsUri": "https://uuapp.plus4u.net/uu-flsg01-main/8014eb79e8184ebb8942d96ce37b61b4/",
+  "imageUri": "https://uuapp.plus4u.net/uu-bookkit-maing01/71f8d7b5cfdc4336b0abfe47b3cb237b/getBookLogo?language=en&type=16x9",
+  "devkit": {
+    "development": {
+      "appBoxLocationUri": "----- VALUE REQUIRED -----",
+      "appDeploymentUri": null,
+      "resourcePoolUri": "----- VALUE REQUIRED -----"
+    }
+  },
+  "uu_jokesg01": {
+    "namespace": "UuJokes",
+    "sourceUri": "https://cdn.plus4u.net/uu-jokesg01/%s/uu_jokesg01.min.js",
+    "componentList": [
+      {
+        "code": "UuJokes.Joke.Detail",
+        "name": "Joke Detail",
+        "tagList": [
+          "UuJokes",
+          "Joke",
+          "Detail"
+        ],
+        "docCode": "UuJokesJokeDetail",
+        "desc": "Shows joke with possibility to rate and update content.",
+        "icon": "mdi-emoticon-happy-outline",
+        "imageUri": "",
+        "uuEccReady": true,
+        "template": "<UuJokes.Joke.Detail  />"
+      },
+      {
+        "code": "UuJokes.Joke.Detail.EditModalLazy",
+        "name": "EditModalLazy",
+        "tagList": [
+          "UuJokes",
+          "Joke",
+          "Detail",
+          "EditModalLazy"
+        ],
+        "docCode": "UuJokesJokeDetailEditModalLazy",
+        "desc": "",
+        "icon": "",
+        "imageUri": "",
+        "uuEccReady": false,
+        "template": "<UuJokes.Joke.Detail.EditModalLazy />"
+      },
+      {
+        "code": "UuJokes.Joke.Detail.EditModal",
+        "name": "EditModal",
+        "tagList": [
+          "UuJokes",
+          "Joke",
+          "Detail",
+          "EditModal"
+        ],
+        "docCode": "UuJokesJokeDetailEditModal",
+        "desc": "",
+        "icon": "",
+        "imageUri": "",
+        "uuEccReady": false,
+        "template": "<UuJokes.Joke.Detail.EditModal />"
+      }
+    ]
+  },
+  "uu_jokesg01-core": {
+    "namespace": "UuJokesCore",
+    "sourceUri": "https://cdn.plus4u.net/uu-jokesg01/%s/uu_jokesg01-core.min.js",
+    "componentList": [
+      {
+        "code": "UuJokesCore.Joke.Detail",
+        "name": "Joke Detail (core)",
+        "tagList": [
+          "UuJokesCore",
+          "Joke",
+          "Detail"
+        ],
+        "docCode": "UuJokesCoreJokeDetail",
+        "desc": "Shows joke with possibility to rate and update content.",
+        "icon": "mdi-emoticon-happy-outline",
+        "imageUri": "",
+        "uuEccReady": false,
+        "template": "<UuJokesCore.Joke.Detail />"
+      },
+      {
+        "code": "UuJokesCore.Joke.Provider",
+        "name": "Joke Provider",
+        "tagList": [
+          "UuJokesCore",
+          "Joke",
+          "Provider"
+        ],
+        "docCode": "UuJokesCoreJokeProvider",
+        "desc": "Non-visual component providing data about joke.",
+        "icon": "mdi-emoticon-happy-outline",
+        "imageUri": "",
+        "uuEccReady": false,
+        "template": "<UuJokesCore.Joke.Provider />"
+      },
+      {
+        "code": "UuJokesCore.Joke.DetailView",
+        "name": "Joke Detail View",
+        "tagList": [
+          "UuJokesCore",
+          "Joke",
+          "DetailView"
+        ],
+        "docCode": "UuJokesCoreJokeDetailView",
+        "desc": "Visual representation of the joke detail. You need to provide joke data.",
+        "icon": "mdi-emoticon-happy-outline",
+        "imageUri": "",
+        "uuEccReady": false,
+        "template": "<UuJokesCore.Joke.DetailView />"
+      },
+      {
+        "code": "UuJokesCore.Preference.Provider",
+        "name": "Provider",
+        "tagList": [
+          "UuJokesCore",
+          "Preference",
+          "Provider"
+        ],
+        "docCode": "UuJokesCorePreferenceProvider",
+        "desc": "",
+        "icon": "",
+        "imageUri": "",
+        "uuEccReady": false,
+        "template": "<UuJokesCore.Preference.Provider />"
+      }
+    ]
+  }
+}
