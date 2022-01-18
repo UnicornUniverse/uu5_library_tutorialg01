@@ -50,7 +50,7 @@ export const Provider = createComponent({
     }
 
     function handleUpdate(values) {
-      const dtoIn = { id: jokeDataObject.data.id, ...values };
+      const dtoIn = { ...values, id: jokeDataObject.data.id };
       return Calls.Joke.update(dtoIn, props.baseUri);
     }
 
