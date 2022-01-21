@@ -3,3 +3,4 @@ export * from "./provider.js";
 export * from "./errors";
 export * from "./detail-view.js";
 export * from "./context";
+export * from "./use-joke";
