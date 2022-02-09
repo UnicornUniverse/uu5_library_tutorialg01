@@ -1,11 +1,9 @@
 //@@viewOn:imports
-import UU5 from "uu5g04";
-import { createVisualComponent } from "uu5g04-hooks";
-import { useSubApp } from "uu_plus4u5g01-hooks";
-import JokesProvider from "../jokes/provider";
-import PermissionProvider from "../jokes/permission-provider";
-import PreferenceProvider from "../preference/provider";
-import createCopyTag from "../utils/create-copy-tag";
+import { createVisualComponent } from "uu5g05";
+import { useSubApp } from "uu_plus4u5g02";
+import { createCopyTag } from "../utils/utils";
+import { Provider as JokesProvider, PermissionProvider } from "../jokes/jokes";
+import { Provider as PreferenceProvider } from "../preference/preference";
 import Config from "./config/config";
 import JokeProvider from "./provider";
 import DetailView from "./detail-view";
@@ -13,22 +11,15 @@ import DetailView from "./detail-view";
 
 const STATICS = {
   //@@viewOn:statics
-  displayName: Config.TAG + "Detail",
+  uu5Tag: Config.TAG + "Detail",
   //@@viewOff:statics
 };
 
 const DEFAULT_PROPS = {
-  bgStyle: "transparent",
-  cardView: "full",
-  colorSchema: "default",
-  elevation: 1,
-  borderRadius: "0",
-  contextType: "basic",
-  showCopyComponent: true,
-  showCategories: false,
-  showAuthor: false,
-  showCreationTime: false,
-  disableUserPreference: false,
+  ...Config.Types.Box.defaultProps,
+  ...Config.Types.Inline.defaultProps,
+  ...Config.Types.Preference.defaultProps,
+  ...Config.Types.Detail.Preferences.defaultProps,
 };
 
 export const Detail = createVisualComponent({
@@ -36,20 +27,12 @@ export const Detail = createVisualComponent({
 
   //@@viewOn:propTypes
   propTypes: {
-    baseUri: UU5.PropTypes.string,
-    jokeId: UU5.PropTypes.string.isRequired,
-    bgStyle: UU5.PropTypes.string,
-    cardView: UU5.PropTypes.string,
-    colorSchema: UU5.PropTypes.string,
-    elevation: UU5.PropTypes.oneOfType([UU5.PropTypes.string, UU5.PropTypes.number]),
-    borderRadius: UU5.PropTypes.oneOfType([UU5.PropTypes.string, UU5.PropTypes.number]),
-    contextType: UU5.PropTypes.oneOf(["none", "basic", "full"]),
-    showCopyComponent: UU5.PropTypes.bool,
-    showCategories: UU5.PropTypes.bool,
-    showAuthor: UU5.PropTypes.bool,
-    showCreationTime: UU5.PropTypes.bool,
-    userPreferenceCode: UU5.PropTypes.string,
-    disableUserPreference: UU5.PropTypes.bool,
+    ...Config.Types.Box.propTypes,
+    ...Config.Types.Inline.propTypes,
+    ...Config.Types.Preference.propTypes,
+    ...Config.Types.Detail.Preferences.propTypes,
+    baseUri: JokeProvider.propTypes.baseUri,
+    oid: JokeProvider.propTypes.oid,
   },
   //@@viewOff:propTypes
 
@@ -59,16 +42,19 @@ export const Detail = createVisualComponent({
 
   render(props) {
     //@@viewOn:private
+    let { baseUri, oid, showCategories, showAuthor, showCreationTime, disableUserPreference, uu5Id, ...viewProps } =
+      props;
+
     const subApp = useSubApp();
-    const baseUri = props.baseUri || subApp.baseUri;
-    const { jokeId, showCategories, showAuthor, showCreationTime, disableUserPreference, uu5Id, ...viewProps } = props;
+    baseUri = props.baseUri || subApp.baseUri;
+
     const defaultPreference = { showCategories, showAuthor, showCreationTime };
 
     function handleOnCopyComponent() {
       return createCopyTag(
         "UuJokes.Joke.Detail",
         props,
-        ["baseUri", "jokeId", "showCategories", "showAuthor", "showCreationTime", "disableUserPreference", "uu5Id"],
+        ["baseUri", "oid", "showCategories", "showAuthor", "showCreationTime", "disableUserPreference", "uu5Id"],
         DEFAULT_PROPS
       );
     }
@@ -77,14 +63,14 @@ export const Detail = createVisualComponent({
     //@@viewOn:render
     return (
       <JokesProvider baseUri={baseUri}>
-        {({ subAppDataObject, awscDataObject, systemDataObject, appWorkspace }) => (
+        {({ subAppDataObject, systemDataObject }) => (
           <PermissionProvider profileList={systemDataObject.data?.profileData.uuIdentityProfileList}>
             {(jokesPermission) => (
-              <JokeProvider baseUri={baseUri} id={props.jokeId}>
+              <JokeProvider baseUri={baseUri} oid={oid}>
                 {({ jokeDataObject }) => (
                   <PreferenceProvider
                     baseUri={baseUri}
-                    uu5Tag={STATICS.displayName}
+                    uu5Tag={STATICS.uu5Tag}
                     uu5Id={uu5Id}
                     defaultData={defaultPreference}
                     disableUserPreference={disableUserPreference}
@@ -92,14 +78,12 @@ export const Detail = createVisualComponent({
                   >
                     {({ preferenceDataObject }) => (
                       <DetailView
-                        jokesDataObject={subAppDataObject}
-                        awscDataObject={awscDataObject}
-                        jokeDataObject={jokeDataObject}
-                        preferenceDataObject={preferenceDataObject}
-                        jokesPermission={jokesPermission}
-                        isHome={appWorkspace.isHome}
-                        onCopyComponent={handleOnCopyComponent}
                         {...viewProps}
+                        jokesDataObject={subAppDataObject}
+                        jokeDataObject={jokeDataObject}
+                        jokesPermission={jokesPermission}
+                        preferenceDataObject={preferenceDataObject}
+                        onCopyComponent={handleOnCopyComponent}
                       />
                     )}
                   </PreferenceProvider>

@@ -1,6 +1,5 @@
 //@@viewOn:imports
-import UU5 from "uu5g04";
-import { createComponent, useDataObject, useEffect, useRef, useMemo } from "uu5g04-hooks";
+import { createComponent, PropTypes, useDataObject, useEffect, useRef, useMemo } from "uu5g05";
 import { usePerson } from "uu_plus4u5g02";
 import Config from "./config/config";
 import Context from "./context";
@@ -8,24 +7,20 @@ import Errors from "./errors";
 import Calls from "calls";
 //@@viewOff:imports
 
-const STATICS = {
-  //@@viewOn:statics
-  displayName: Config.TAG + "Provider",
-  //@@viewOff:statics
-};
-
 export const Provider = createComponent({
-  ...STATICS,
+  //@@viewOn:statics
+  uu5Tag: Config.TAG + "Provider",
+  //@@viewOff:statics
 
   //@@viewOn:propTypes
   propTypes: {
-    baseUri: UU5.PropTypes.string,
-    uu5Tag: UU5.PropTypes.string.isRequired,
-    uu5Id: UU5.PropTypes.string,
-    defaultData: UU5.PropTypes.object,
-    scope: UU5.PropTypes.string,
-    skipInitialLoad: UU5.PropTypes.bool,
-    disableUserPreference: UU5.PropTypes.bool,
+    baseUri: PropTypes.string,
+    uu5Tag: PropTypes.string.isRequired,
+    uu5Id: PropTypes.string,
+    defaultData: PropTypes.object,
+    scope: PropTypes.string,
+    skipInitialLoad: PropTypes.bool,
+    disableUserPreference: PropTypes.bool,
   },
   //@@viewOff:propTypes
 

@@ -6,13 +6,12 @@
     "uu_jokesg01",
     "uu_jokesg01-core"
   ],
-  "description": "",
+  "description": "The uuJokes library contains reference components for educational purposes.",
   "license": "License Commercial",
-  "spec": "nodejs-multi; uu_appg01_devkit@4.0.1",
-  "dependencies": {},
+  "spec": "nodejs-multi; uu_appg01_devkit@5.0.0",
   "uuBuildSettings": {},
   "devDependencies": {
-    "uu_appg01_devkit": "^4.0.1"
+    "uu_appg01_devkit": "^5.0.0"
   },
   "scripts": {
     "clean": "uu_appg01_devkit clean",

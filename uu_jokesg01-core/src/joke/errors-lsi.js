@@ -1,9 +1,9 @@
 import Errors from "./errors";
 
 const Lsi = {
-  [Errors.NoIdError.code]: {
-    en: "The jokeId property is missing!",
-    cs: "Není zadána property jokeId!",
+  [Errors.NoOidError.code]: {
+    en: "The oid property is missing!",
+    cs: "Není zadána property oid!",
   },
   "uu-jokes-main/joke/addRating/userNotAuthorized": {
     en: "The author is not allowed to rate own jokes.",

@@ -1,9 +1,7 @@
-import UU5 from "uu5g04";
 import UuJokesCore from "uu_jokesg01-core";
+import { shallow } from "uu5g05-test";
 
-const { shallow } = UU5.Test.Tools;
-
-describe(`UuJokesCore.Joke.Detail`, () => {
+describe(`UuJokesCore.Joke.JokeDetail`, () => {
   it(`default props`, () => {
     const wrapper = shallow(<UuJokesCore.Joke.Detail />);
     expect(wrapper).toMatchSnapshot();

@@ -1,23 +1,18 @@
 //@@viewOn:imports
-import UU5 from "uu5g04";
-import { createComponent, useMemo, useSession } from "uu5g04-hooks";
+import { createComponent, PropTypes, useMemo, useSession } from "uu5g05";
 import { useSystemData } from "uu_plus4u5g02";
 import Config from "./config/config";
 import PermissionContext from "./permission-context";
 //@@viewOff:imports
 
-const STATICS = {
-  //@@viewOn:statics
-  displayName: Config.TAG + "PermissionProvider",
-  //@@viewOff:statics
-};
-
 export const PermissionProvider = createComponent({
-  ...STATICS,
+  //@@viewOn:statics
+  uu5Tag: Config.TAG + "PermissionProvider",
+  //@@viewOff:statics
 
   //@@viewOn:propTypes
   propTypes: {
-    profileList: UU5.PropTypes.array,
+    profileList: PropTypes.array,
   },
   //@@viewOff:propTypes
 
@@ -32,8 +27,9 @@ export const PermissionProvider = createComponent({
 
     const permission = useMemo(() => {
       const profileList = props.profileList || systemData?.profileData?.uuIdentityProfileList || [];
-      const isAuthority = profileList.some((profile) => profile === "Authorities");
-      const isExecutive = profileList.some((profile) => profile === "Executives");
+      const isAuthority = profileList.includes("Authorities");
+      const isExecutive = profileList.includes("Executives");
+      const isAwidLicenseOwner = profileList.includes("AwidLicenseOwner");
 
       function isOwner(joke) {
         return identity?.uuIdentity === joke.uuIdentity;
@@ -42,6 +38,7 @@ export const PermissionProvider = createComponent({
       const jokes = {
         canUpdate: () => isAuthority,
         canSetState: () => isAuthority,
+        canInit: () => isAwidLicenseOwner,
       };
 
       const joke = {

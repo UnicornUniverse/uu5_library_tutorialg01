@@ -1,9 +1,9 @@
-import UU5 from "uu5g04";
+import { Utils } from "uu5g05";
 
 const BLACKLISTED_COPY_PROPS = ["getEditablePropValue", "generatedId", "parent", "_registerOnDccModalClose", "ref_"];
-const STANDARD_VISUAL_PROPS = ["colorSchema", "elevation", "bgStyle", "borderRadius", "padding", "cardView"];
+const STANDARD_VISUAL_PROPS = ["colorScheme", "significance", "background", "borderRadius", "card"];
 
-export default function createCopyTag(tag, props, useProps = [], defaultProps = {}) {
+export function createCopyTag(tag, props, useProps = [], defaultProps = {}) {
   const allowedProps = [...STANDARD_VISUAL_PROPS, ...useProps];
   const tagProps = {};
 
@@ -18,5 +18,7 @@ export default function createCopyTag(tag, props, useProps = [], defaultProps = 
     }
   });
 
-  return new UU5.Common.UU5String([{ tag, props: tagProps }]).toString();
+  return new Utils.Uu5String([{ tag, props: tagProps }]).toString();
 }
+
+export default createCopyTag;

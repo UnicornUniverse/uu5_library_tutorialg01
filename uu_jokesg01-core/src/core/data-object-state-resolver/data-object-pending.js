@@ -1,7 +1,6 @@
 //@@viewOn:imports
-import UU5 from "uu5g04";
-import "uu5g04-bricks";
-import { createVisualComponent } from "uu5g04-hooks";
+import { createVisualComponent, PropTypes, Utils } from "uu5g05";
+import { Pending } from "uu5g05-elements";
 import Config from "./config/config";
 //@@viewOff:imports
 
@@ -9,14 +8,17 @@ import Config from "./config/config";
 const Css = {
   placeholder: (height) => Config.Css.css`
     height: ${height}px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   `,
 };
 //@@viewOff:css
 
 const STATICS = {
   //@@viewOn:statics
-  displayName: Config.TAG + "DataObjectPending",
-  nestingLevel: ["smallBox", "inline"],
+  uu5Tag: Config.TAG + "DataObjectPending",
+  nestingLevel: ["box", "inline"],
   //@@viewOff:statics
 };
 
@@ -25,30 +27,35 @@ const DataObjectPending = createVisualComponent({
 
   //@@viewOn:propTypes
   propTypes: {
-    height: UU5.PropTypes.number,
+    height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   },
   //@@viewOff:propTypes
 
   //@@viewOn:defaultProps
-  defaultProps: {},
+  defaultProps: {
+    height: "100%",
+  },
   //@@viewOff:defaultProps
 
   render(props) {
     //@@viewOn:render
-    const currentNestingLevel = UU5.Utils.NestingLevel.getNestingLevel(props, STATICS);
-    const className = props.height ? Css.placeholder(props.height) : "";
-    const attrs = UU5.Common.VisualComponent.getAttrs(props, className);
+    const currentNestingLevel = Utils.NestingLevel.getNestingLevel(props, STATICS);
+    const { height, ...otherProps } = props;
+    const className = Css.placeholder(height);
+    const [elementProps, pendingProps] = Utils.VisualComponent.splitProps(otherProps, className);
+
+    const attrs = Utils.VisualComponent.getAttrs(elementProps, className);
 
     switch (currentNestingLevel) {
-      case "smallBox":
+      case "box":
         return (
           <div {...attrs}>
-            <UU5.Bricks.Loading />
+            <Pending {...pendingProps} size="xl" className={Config.Css.css`display: block`} />
           </div>
         );
       case "inline":
       default:
-        return <UU5.Bricks.Loading inline />;
+        return <Pending {...pendingProps} nestingLevel="inline" />;
     }
     //@@viewOff:render
   },

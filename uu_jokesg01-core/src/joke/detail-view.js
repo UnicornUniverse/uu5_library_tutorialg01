@@ -1,32 +1,20 @@
 //@@viewOn:imports
 import UU5 from "uu5g04";
-import { createVisualComponent, useRef, useState } from "uu5g04-hooks";
-import Error from "../core/error";
+import { createVisualComponent, Utils, useRef, useState, Lsi } from "uu5g05";
+import { Error } from "../core/core";
 import Config from "./config/config";
 import BoxView from "./detail-view/box-view";
 import InlineView from "./detail-view/inline-view";
 import PreferenceModal from "./detail-view/preference-modal";
 import JokeErrorsLsi from "./errors-lsi";
-import Lsi from "./detail-view-lsi";
+import LsiData from "./detail-view-lsi";
 //@@viewOff:imports
 
 const STATICS = {
   //@@viewOn:statics
-  displayName: Config.TAG + "DetailView",
+  uu5Tag: Config.TAG + "DetailView",
   nestingLevel: ["box", "inline"],
   //@@viewOff:statics
-};
-
-const DEFAULT_PROPS = {
-  bgStyle: "transparent",
-  cardView: "full",
-  colorSchema: "default",
-  elevation: 1,
-  borderRadius: "0",
-  isHome: false,
-  contextType: "basic",
-  showCopyComponent: true,
-  onCopyComponent: () => {},
 };
 
 export const DetailView = createVisualComponent({
@@ -34,32 +22,25 @@ export const DetailView = createVisualComponent({
 
   //@@viewOn:propTypes
   propTypes: {
-    jokeDataObject: UU5.PropTypes.object.isRequired,
-    jokesDataObject: UU5.PropTypes.object.isRequired,
-    awscDataObject: UU5.PropTypes.object.isRequired,
-    jokesPermission: UU5.PropTypes.object.isRequired,
-    isHome: UU5.PropTypes.bool,
-    contextType: UU5.PropTypes.oneOf(["none", "basic", "full"]),
-    baseUri: UU5.PropTypes.string,
-    bgStyle: UU5.PropTypes.string,
-    cardView: UU5.PropTypes.string,
-    colorSchema: UU5.PropTypes.string,
-    elevation: UU5.PropTypes.oneOfType([UU5.PropTypes.string, UU5.PropTypes.number]),
-    borderRadius: UU5.PropTypes.oneOfType([UU5.PropTypes.string, UU5.PropTypes.number]),
-    showCopyComponent: UU5.PropTypes.bool,
-    onCopyComponent: UU5.PropTypes.func,
+    ...Config.Types.Box.propTypes,
+    ...Config.Types.Inline.propTypes,
+    ...Config.Types.Detail.AsyncData.propTypes,
   },
   //@@viewOff:propTypes
 
   //@@viewOn:defaultProps
-  defaultProps: DEFAULT_PROPS,
+  defaultProps: {
+    ...Config.Types.Box.defaultProps,
+    ...Config.Types.Inline.defaultProps,
+    ...Config.Types.Detail.AsyncData.defaultProps,
+  },
   //@@viewOff:defaultProps
 
   render(props) {
     //@@viewOn:private
     const alertBusRef = useRef();
-    const [isPreferenceModal, setIsPreferenceModal] = useState(false);
     const [disabled, setDisabled] = useState(false);
+    const [isPreferenceModal, setIsPreferenceModal] = useState(false);
 
     function showError(error, alertBus = alertBusRef.current) {
       alertBus.addAlert({
@@ -84,12 +65,14 @@ export const DetailView = createVisualComponent({
       }
     }
 
+    const handleUpdate = () => {};
+
     function handleCopyComponent() {
       const uu5string = props.onCopyComponent();
       UU5.Utils.Clipboard.write(uu5string);
 
       alertBusRef.current.addAlert({
-        content: <UU5.Bricks.Lsi lsi={Lsi.copyComponentSuccess} />,
+        content: <Lsi lsi={LsiData.copyComponentSuccess} />,
         colorSchema: "success",
       });
     }
@@ -97,17 +80,19 @@ export const DetailView = createVisualComponent({
     async function handleReload() {
       try {
         setDisabled(true);
-        await Promise.all([props.jokesDataObject.handlerMap.load(), props.jokeDataObject.handlerMap.load()]);
+        // HINT: We should reload ALL data consumed by the component be sure the user is looking on up-to-date data
+        await Promise.all([
+          props.jokesDataObject.handlerMap.load(),
+          props.jokeDataObject.handlerMap.load(),
+          // Property preferenceDataObject is optional
+          props.preferenceDataObject?.handlerMap.load(),
+        ]);
       } catch (error) {
         console.error(error);
         showError(error);
       } finally {
         setDisabled(false);
       }
-    }
-
-    function handleUpdate() {
-      /** There you could show modal window */
     }
 
     const handleOpenPreference = () => {
@@ -124,21 +109,22 @@ export const DetailView = createVisualComponent({
     //@@viewOff:private
 
     //@@viewOn:render
-    const currentNestingLevel = UU5.Utils.NestingLevel.getNestingLevel(props, STATICS);
+    const actionList = getActions(props, handleReload, handleCopyComponent, handleOpenPreference);
+    const currentNestingLevel = Utils.NestingLevel.getNestingLevel(props, STATICS);
 
     const viewProps = {
       ...props,
-      header: Lsi.header,
-      help: Lsi.help,
-      showCopyComponent: props.showCopyComponent,
+      header: LsiData.header,
+      info: LsiData.info,
+      actionList,
       disabled: disabled || props.disabled,
       onUpdate: handleUpdate,
       onAddRating: handleAddRating,
       onUpdateVisibility: handleUpdateVisibility,
-      onCopyComponent: handleCopyComponent,
-      onOpenPreference: handleOpenPreference,
-      onReload: handleReload,
     };
+
+    // ISSUE - Uu5Elements - No alternative for UU5.Bricks.AlertBus
+    // https://uuapp.plus4u.net/uu-sls-maing01/e80acdfaeb5d46748a04cfc7c10fdf4e/issueDetail?id=61ebd5b1572961002969f271
 
     return (
       <>
@@ -148,9 +134,9 @@ export const DetailView = createVisualComponent({
         {isPreferenceModal && (
           <PreferenceModal
             preferenceDataObject={props.preferenceDataObject}
-            shown={isPreferenceModal}
             onSaveDone={handlePreferenceDone}
             onCancel={handlePreferenceCancel}
+            shown
           />
         )}
       </>
@@ -158,5 +144,43 @@ export const DetailView = createVisualComponent({
     //@@viewOff:render
   },
 });
+
+//@@viewOn:helpers
+function getActions(props, handleReload, handleCopyComponent, handleOpenPreference) {
+  const isDataLoaded =
+    props.jokesDataObject.data !== null &&
+    props.jokeDataObject.data !== null &&
+    props.preferenceDataObject.data !== null;
+
+  const actionList = [];
+
+  if (isDataLoaded) {
+    actionList.push({
+      icon: "mdi-sync",
+      children: <Lsi lsi={LsiData.reloadData} />,
+      onClick: handleReload,
+      collapsed: true,
+      disabled: props.disabled,
+    });
+    actionList.push({
+      icon: "mdi-settings",
+      children: <Lsi lsi={LsiData.configure} />,
+      onClick: handleOpenPreference,
+      collapsed: true,
+      disabled: props.disabled || props.preferenceDataObject.data.disableUserPreference,
+    });
+  }
+
+  actionList.push({
+    icon: "mdi-content-copy",
+    children: <Lsi lsi={LsiData.copyComponent} />,
+    onClick: handleCopyComponent,
+    collapsed: true,
+    disabled: props.disabled,
+  });
+
+  return actionList;
+}
+//@@viewOff:helpers
 
 export default DetailView;

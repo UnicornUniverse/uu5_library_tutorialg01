@@ -1,30 +1,28 @@
 //@@viewOn:imports
-import UU5 from "uu5g04";
-import { createComponent, useDataObject, useEffect, useRef, useMemo } from "uu5g04-hooks";
+import { createComponent, PropTypes, useDataObject, useEffect, useRef, useMemo } from "uu5g05";
 import Config from "./config/config";
 import Calls from "calls";
 import Context from "./context";
 import Errors from "./errors";
 //@@viewOff:imports
 
-const STATICS = {
-  //@@viewOn:statics
-  displayName: Config.TAG + "Provider",
-  //@@viewOff:statics
-};
-
 export const Provider = createComponent({
-  ...STATICS,
+  //@@viewOn:statics
+  uu5Tag: Config.TAG + "Provider",
+  //@@viewOff:statics
 
   //@@viewOn:propTypes
   propTypes: {
-    baseUri: UU5.PropTypes.string,
-    id: UU5.PropTypes.string.isRequired,
+    baseUri: PropTypes.string,
+    oid: PropTypes.string.isRequired,
+    skipImageLoad: PropTypes.bool,
   },
   //@@viewOff:propTypes
 
   //@@viewOn:defaultProps
-  defaultProps: {},
+  defaultProps: {
+    skipImageLoad: false,
+  },
   //@@viewOff:defaultProps
 
   render(props) {
@@ -40,28 +38,45 @@ export const Provider = createComponent({
 
     const prevPropsRef = useRef(props);
 
-    function handleLoad() {
-      if (!props.id) {
-        throw new Errors.NoIdError();
+    async function handleLoad() {
+      if (!props.oid) {
+        throw new Errors.NoOidError();
       }
 
-      const dtoIn = { id: props.id };
-      return Calls.Joke.get(dtoIn, props.baseUri);
+      const jokeDtoIn = { id: props.oid };
+      const joke = await Calls.Joke.get(jokeDtoIn, props.baseUri);
+
+      if (!joke.image || props.skipImageLoad) {
+        return joke;
+      }
+
+      const imageDtoIn = { code: joke.image };
+      const imageFile = await Calls.Joke.getImage(imageDtoIn, props.baseUri);
+      return { ...joke, imageFile };
     }
 
-    function handleUpdate(values) {
-      const dtoIn = { ...values, id: jokeDataObject.data.id };
-      return Calls.Joke.update(dtoIn, props.baseUri);
+    async function handleUpdate(values) {
+      const dtoIn = { id: jokeDataObject.data.id, ...values };
+      const joke = await Calls.Joke.update(dtoIn, props.baseUri);
+      return { ...joke, imageFile: values.image };
     }
 
-    function handleAddRating(rating) {
+    async function handleAddRating(rating) {
       const dtoIn = { id: jokeDataObject.data.id, rating };
-      return Calls.Joke.addRating(dtoIn, props.baseUri);
+      const joke = await Calls.Joke.addRating(dtoIn, props.baseUri);
+      return mergeJoke(joke);
     }
 
-    function handleUpdateVisibility(visibility) {
+    async function handleUpdateVisibility(visibility) {
       const dtoIn = { id: jokeDataObject.data.id, visibility };
-      return Calls.Joke.updateVisibility(dtoIn, props.baseUri);
+      const joke = await Calls.Joke.updateVisibility(dtoIn, props.baseUri);
+      return mergeJoke(joke);
+    }
+
+    function mergeJoke(joke) {
+      return (prevData) => {
+        return { ...joke, imageFile: prevData.imageFile };
+      };
     }
 
     useEffect(() => {
@@ -69,7 +84,7 @@ export const Provider = createComponent({
         const prevProps = prevPropsRef.current;
 
         // No change of baseUri and id = no reload is required
-        if (prevProps.baseUri === props.baseUri && prevPropsRef.current.id === props.id) {
+        if (prevProps.baseUri === props.baseUri && prevPropsRef.current.oid === props.oid) {
           return;
         }
 

@@ -1,23 +1,18 @@
 //@@viewOn:imports
-import UU5 from "uu5g04";
-import { createComponent, useMemo } from "uu5g04-hooks";
+import { createComponent, PropTypes, useMemo } from "uu5g05";
 import { AppWorkspaceProvider } from "uu_plus4u5g02";
 import Calls from "calls";
 import Config from "./config/config";
 //@@viewOff:imports
 
-const STATICS = {
-  //@@viewOn:statics
-  displayName: Config.TAG + "Provider",
-  //@@viewOff:statics
-};
-
 export const Provider = createComponent({
-  ...STATICS,
+  //@@viewOn:statics
+  uu5Tag: Config.TAG + "Provider",
+  //@@viewOff:statics
 
   //@@viewOn:propTypes
   propTypes: {
-    baseUri: UU5.PropTypes.string,
+    baseUri: PropTypes.string,
   },
   //@@viewOff:propTypes
 
@@ -42,6 +37,11 @@ export const Provider = createComponent({
         return mergeDtoOut(dtoOut);
       }
 
+      async function handleInit(values) {
+        const dtoOut = await Calls.Jokes.init(values, props.baseUri);
+        return mergeDtoOut(dtoOut);
+      }
+
       function mergeDtoOut(dtoOut) {
         return (prevData) => {
           const data = {
@@ -61,7 +61,7 @@ export const Provider = createComponent({
         };
       }
 
-      return { load: handleLoad, update: handleUpdate, setState: handleSetState };
+      return { load: handleLoad, update: handleUpdate, setState: handleSetState, init: handleInit };
     }, [props.baseUri]);
     //@@viewOff:private
 

@@ -1,53 +1,27 @@
-import UU5 from "uu5g04";
-import Plus4U5 from "uu_plus4u5g01";
+import { Environment } from "uu5g05";
+import Plus4U5 from "uu_plus4u5g02";
 
-const Calls = {
-  /** URL containing app base, e.g. "https://uuapp.plus4u.net/vnd-app/awid/". */
-  APP_BASE_URI: location.protocol + "//" + location.host + UU5.Environment.getAppBasePath(),
-
+let Calls = {
   async call(method, url, dtoIn, clientOptions) {
-    const response = await Plus4U5.Common.Calls.call(method, url, dtoIn, clientOptions);
+    const response = await Plus4U5.Utils.AppClient[method](url, dtoIn, clientOptions);
     return response.data;
   },
 
   Jokes: {
     load(dtoIn, baseUri) {
       const commandUri = Calls.getCommandUri("sys/uuAppWorkspace/load", baseUri);
-      return UU5.Common.Tools.groupCall(commandUri, dtoIn, () => Calls.call("get", commandUri, dtoIn));
-    },
-    setState(dtoIn, baseUri) {
-      const commandUri = Calls.getCommandUri("jokes/setState", baseUri);
-      return Calls.call("post", commandUri, dtoIn);
-    },
-    update(dtoIn, baseUri) {
-      const commandUri = Calls.getCommandUri("jokes/update", baseUri);
-      return Calls.call("post", commandUri, dtoIn);
+      return Calls.call("get", commandUri, dtoIn);
     },
   },
 
   Joke: {
-    list(dtoIn, baseUri) {
-      const commandUri = Calls.getCommandUri("joke/list", baseUri);
-      return UU5.Common.Tools.groupCall(commandUri, dtoIn, () => Calls.call("get", commandUri, dtoIn));
-    },
-
     get(dtoIn, baseUri) {
       const commandUri = Calls.getCommandUri("joke/get", baseUri);
-      return UU5.Common.Tools.groupCall(commandUri, dtoIn, () => Calls.call("get", commandUri, dtoIn));
-    },
-
-    create(dtoIn, baseUri) {
-      const commandUri = Calls.getCommandUri("joke/create", baseUri);
-      return Calls.call("post", commandUri, dtoIn);
+      return Calls.call("get", commandUri, dtoIn);
     },
 
     update(dtoIn, baseUri) {
       const commandUri = Calls.getCommandUri("joke/update", baseUri);
-      return Calls.call("post", commandUri, dtoIn);
-    },
-
-    delete(dtoIn, baseUri) {
-      const commandUri = Calls.getCommandUri("joke/delete", baseUri);
       return Calls.call("post", commandUri, dtoIn);
     },
 
@@ -60,12 +34,17 @@ const Calls = {
       const commandUri = Calls.getCommandUri("joke/updateVisibility", baseUri);
       return Calls.call("post", commandUri, dtoIn);
     },
+
+    getImage(dtoIn, baseUri) {
+      const commandUri = Calls.getCommandUri("uu-app-binarystore/getBinaryData", baseUri);
+      return Calls.call("get", commandUri, dtoIn);
+    },
   },
 
   Preference: {
     loadFirst(dtoIn, baseUri) {
       const commandUri = Calls.getCommandUri("preference/loadFirst", baseUri);
-      return UU5.Common.Tools.groupCall(commandUri, dtoIn, () => Calls.call("get", commandUri, dtoIn));
+      return Calls.call("get", commandUri, dtoIn);
     },
 
     createOrUpdate(dtoIn, baseUri) {
@@ -77,14 +56,14 @@ const Calls = {
   getCommandUri(aUseCase, baseUri) {
     // useCase <=> e.g. "getSomething" or "sys/getSomething"
     // add useCase to the application base URI
-    let properBaseUri = Calls.APP_BASE_URI;
+    let properBaseUri = Environment.appBaseUri;
     if (baseUri) properBaseUri = !baseUri.endsWith("/") ? baseUri.concat("/") : baseUri;
 
     let targetUriStr = properBaseUri + aUseCase.replace(/^\/+/, "");
 
     // override tid / awid if it's present in environment (use also its gateway in such case)
     if (process.env.NODE_ENV !== "production") {
-      let env = UU5.Environment;
+      let env = Environment;
       if (env.tid || env.awid || env.vendor || env.app) {
         let url = Plus4U5.Common.Url.parse(targetUriStr);
         if (env.tid || env.awid) {

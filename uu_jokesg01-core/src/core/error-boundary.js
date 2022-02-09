@@ -10,7 +10,7 @@ const STATICS = {
   //@@viewOff:statics
 };
 
-const ErrorBoundary = createComponent({
+export const ErrorBoundary = createComponent({
   statics: {
     ...STATICS,
 
