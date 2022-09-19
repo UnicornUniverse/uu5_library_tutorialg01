@@ -1,0 +1,19 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug Bricks",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://localhost:4322/",
+      "webRoot": "${workspaceFolder}/uu_jokesg01/"
+    },
+    {
+      "name": "Debug Core",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://localhost:4321/",
+      "webRoot": "${workspaceFolder}/uu_jokesg01-core/"
+    }
+  ]
+}
