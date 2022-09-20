@@ -1,0 +1,24 @@
+{
+  "UuJokes.Joke.Detail.EditModalLazy": {
+    "header": "Upravit Joke.Detail",
+    "properties": "Vtip",
+    "baseUri": "URL aplikace uuJokes",
+    "oid": "Identifikátor (oid)",
+    "configuration": "Výchozí nastavení",
+    "showCategories": "Zobrazit kategorie",
+    "showAuthor": "Zobrazit autora",
+    "showCreationTime": "Zobrazit čas vytvoření",
+    "disableUserPreference": "Zakázat uživatelské nastavení",
+    "margin": "Okraj",
+    "visual": "Nastavení vzhledu",
+    "identificationType": "Typ identifikace",
+    "default": "výchozí",
+    "none": "žádný",
+    "basic": "základní",
+    "width": "Šířka",
+    "height": "Výška",
+    "widthHeightMessage": "Lze použít různé jednotky (px, em, vw, % a další). Pokud není jednotka specifikována, použijí se px.",
+    "advancedConfiguration": "Pokročilá nastavení",
+    "level": "Velikost nadpisu"
+  }
+}

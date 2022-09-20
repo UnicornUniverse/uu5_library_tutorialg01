@@ -1,256 +1,142 @@
 //@@viewOn:imports
-import UU5 from "uu5g04";
-import { createComponentWithRef, PropTypes, Lsi, useRef, useImperativeHandle } from "uu5g05";
-import "uu5g04-bricks";
+import { createVisualComponent, Utils, useEffect, useLsi } from "uu5g05";
 import Config from "./config/config";
-import LsiData from "./edit-modal-lazy-lsi";
+import importLsi from "../../lsi/import-lsi";
+const { EditModal } = Utils.Uu5Loader.get("uu5g05-editing");
+const { FormText, FormCheckbox, FormSwitchSelect } = Utils.Uu5Loader.get("uu5g05-forms");
 //@@viewOff:imports
 
-//TODO MFA - Add documentation link to info header
-const EditModalLazy = createComponentWithRef({
+const EditModalLazy = createVisualComponent({
   //@@viewOn:statics
   uu5Tag: Config.TAG + "EditModalLazy",
   //@@viewOff:statics
 
-  //@@viewOn:propTypes
-  propTypes: {
-    props: PropTypes.object,
-    onClose: PropTypes.func,
-  },
-  //@@viewOff:propTypes
-
-  //@@viewOn:defaultProps
-  defaultProps: {},
-  //@@viewOff:defaultProps
-
-  render({ props, onClose }, ref) {
+  render(props) {
     //@@viewOn:private
-    const modalRef = useRef();
+    const lsi = useLsi(importLsi, [EditModalLazy.uu5Tag]);
+    useEffect(() => props.onReady(), [props]);
+
+    const tabList = [
+      {
+        label: lsi.properties,
+        layout: {
+          xs: "baseUri, oid",
+        },
+      },
+      {
+        label: lsi.configuration,
+        layout: {
+          xs: "showCategories, showAuthor, showCreationTime, .,disableUserPreference",
+        },
+      },
+      {
+        template: "visual",
+        layout: {
+          xs: `
+            identificationType identificationType,
+            nestingLevel nestingLevel,
+            card card,
+            significance significance,
+            borderRadius borderRadius,
+            aspectRatio aspectRatio,
+            width height
+          `,
+        },
+        columns: "1fr 1fr",
+      },
+      {
+        label: lsi.advancedConfiguration,
+        layout: {
+          xs: `level`,
+        },
+      },
+    ];
+
+    const propInputMap = {
+      baseUri: {
+        props: {
+          label: lsi.baseUri,
+          required: true,
+        },
+      },
+      oid: {
+        component: FormText,
+        props: {
+          label: lsi.oid,
+          required: true,
+        },
+      },
+      showCategories: {
+        component: FormCheckbox,
+        props: {
+          label: lsi.showCategories,
+        },
+      },
+      showAuthor: {
+        component: FormCheckbox,
+        props: {
+          label: lsi.showAuthor,
+        },
+      },
+      showCreationTime: {
+        component: FormCheckbox,
+        props: {
+          label: lsi.showCreationTime,
+        },
+      },
+      disableUserPreference: {
+        component: FormCheckbox,
+        props: {
+          label: lsi.disableUserPreference,
+        },
+      },
+      nestingLevel: {
+        props: {
+          valueList: ["area", "box", "spot", "inline"],
+        },
+      },
+      aspectRatio: {
+        props: {
+          valueList: ["1:1", "2:1", "2:3", "3:1", "3:2", "3:4", "4:3", "4:5", "5:4", "16:9", "16:10"],
+        },
+      },
+      level: {
+        component: FormSwitchSelect,
+        props: ({ componentProps }) => {
+          return {
+            label: lsi.level,
+            itemList: [
+              { children: "auto", value: undefined },
+              { value: 1 },
+              { value: 2 },
+              { value: 3 },
+              { value: 4 },
+              { value: 5 },
+            ],
+            disabled: componentProps.card === "full",
+          };
+        },
+      },
+    };
+
+    function handleSave(data) {
+      const aspectRatio = data.props.aspectRatio?.replace(":", "x");
+      const newValues = { ...data.props, aspectRatio };
+      props.onSave({ ...data, props: newValues });
+    }
     //@@viewOff:private
 
-    //@@viewOn:interface
-    useImperativeHandle(ref, () => ({
-      getPropsToSave: () => modalRef.current.getPropsToSave(),
-    }));
-    //@@viewOff:interface
-
     //@@viewOn:render
-
-    // ISSUE Uu5g05 - No alternative for UU5.BricksEditable.Modal
-    // https://uuapp.plus4u.net/uu-sls-maing01/e80acdfaeb5d46748a04cfc7c10fdf4e/issueDetail?id=61ec02e4572961002969f577
-
     return (
-      <UU5.BricksEditable.Modal
-        header={<Lsi lsi={LsiData.header} />}
-        shown
-        onClose={onClose}
-        componentName={"UuJokes.Joke.Detail"}
-        componentProps={props}
-        componentPropsForm={[
-          {
-            name: <Lsi lsi={LsiData.properties} />,
-            setup: [
-              {
-                name: "baseUri",
-                type: "text",
-                label: LsiData.baseUri,
-                required: true,
-              },
-              {
-                name: "oid",
-                type: "text",
-                label: LsiData.oid,
-                required: true,
-              },
-            ],
-            info: <Lsi lsi={LsiData.info} params={[]} />,
-          },
-          {
-            name: <Lsi lsi={LsiData.configuration} />,
-            setup: [
-              {
-                name: "showCategories",
-                type: "bool",
-                label: LsiData.showCategories,
-                getProps: () => {
-                  return {
-                    type: 1,
-                    bgStyleChecked: "filled",
-                    labelColWidth: "xs-6",
-                    inputColWidth: "xs-6",
-                  };
-                },
-              },
-              {
-                name: "showAuthor",
-                type: "bool",
-                label: LsiData.showAuthor,
-                getProps: () => {
-                  return {
-                    type: 1,
-                    bgStyleChecked: "filled",
-                    labelColWidth: "xs-6",
-                    inputColWidth: "xs-6",
-                  };
-                },
-              },
-              {
-                name: "showCreationTime",
-                type: "bool",
-                label: LsiData.showCreationTime,
-                getProps: () => {
-                  return {
-                    type: 1,
-                    bgStyleChecked: "filled",
-                    labelColWidth: "xs-6",
-                    inputColWidth: "xs-6",
-                  };
-                },
-              },
-              {
-                type: "separator",
-              },
-              {
-                name: "disableUserPreference",
-                type: "bool",
-                label: LsiData.disableUserPreference,
-                getProps: () => {
-                  return {
-                    type: 1,
-                    bgStyleChecked: "filled",
-                    labelColWidth: "xs-6",
-                    inputColWidth: "xs-6",
-                  };
-                },
-              },
-            ],
-            info: <Lsi lsi={LsiData.configurationInfo} params={[]} />,
-          },
-          {
-            name: <Lsi lsi={LsiData.visual} />,
-            setup: [
-              {
-                name: "contextType",
-                type: "switchSelector",
-                label: LsiData.contextType,
-                getProps: () => ({
-                  items: [
-                    { content: <Lsi lsi={LsiData.none} />, value: "none" },
-                    { content: <Lsi lsi={LsiData.basic} />, value: "basic" },
-                    { content: <Lsi lsi={LsiData.full} />, value: "full" },
-                  ],
-                }),
-              },
-              {
-                name: "card",
-                type: "switchSelector",
-                label: LsiData.card,
-                getProps: () => {
-                  return {
-                    items: [
-                      { content: "none", value: "none" },
-                      { content: "full", value: "full" },
-                      { content: "content", value: "content" },
-                    ],
-                  };
-                },
-              },
-              {
-                name: "colorScheme",
-                type: "switchSelector",
-                label: LsiData.colorScheme,
-                getProps: () => {
-                  return {
-                    items: [
-                      { content: "dark-blue", value: "dark-blue" },
-                      { content: "blue", value: "blue" },
-                      { content: "light-blue", value: "light-blue" },
-                      { content: "cyan", value: "cyan" },
-                      { content: "dark-green", value: "dark-green" },
-                      { content: "green", value: "green" },
-                      { content: "light-green", value: "light-green" },
-                      { content: "lime", value: "lime" },
-                      { content: "yellow", value: "yellow" },
-                      { content: "orange", value: "orange" },
-                      { content: "red", value: "red" },
-                      { content: "pink", value: "pink" },
-                      { content: "purple", value: "purple" },
-                      { content: "dark-purple", value: "dark-purple" },
-                      { content: "brown", value: "brown" },
-                      { content: "grey", value: "grey" },
-                      { content: "steel", value: "steel" },
-                    ],
-                  };
-                },
-              },
-              {
-                name: "background",
-                type: "switchSelector",
-                label: LsiData.background,
-                getProps: () => {
-                  return {
-                    items: [
-                      { content: "light", value: "light" },
-                      { content: "dark", value: "dark" },
-                      { content: "full", value: "full" },
-                      { content: "soft", value: "soft" },
-                    ],
-                  };
-                },
-              },
-              {
-                name: "significance",
-                type: "switchSelector",
-                label: LsiData.significance,
-                getProps: () => {
-                  return {
-                    items: [
-                      { content: "common", value: "common" },
-                      { content: "highlighted", value: "highlighted" },
-                      { content: "distinct", value: "distinct" },
-                      { content: "subdued", value: "subdued" },
-                    ],
-                  };
-                },
-              },
-              {
-                name: "borderRadius",
-                type: "switchSelector",
-                label: LsiData.borderRadius,
-                getProps: () => {
-                  return {
-                    items: [
-                      { content: "none", value: "none" },
-                      { content: "elementary", value: "elementary" },
-                      { content: "moderate", value: "moderate" },
-                      { content: "expressive", value: "expressive" },
-                    ],
-                  };
-                },
-              },
-            ],
-            info: <Lsi lsi={LsiData.info} />,
-          },
-          {
-            name: <Lsi lsi={LsiData.advancedConfiguration} />,
-            setup: [
-              {
-                name: "uu5Id",
-                type: "text",
-                label: LsiData.uu5Id,
-                getProps: (opt, componentProps) => {
-                  return {
-                    pattern: "^[0-9a-zA-Z_]{3,32}$",
-                    patternMessage: <Lsi lsi={LsiData.invaliduu5Id} />,
-                    required: !componentProps.disableUserPreference,
-                  };
-                },
-              },
-            ],
-            info: <Lsi lsi={LsiData.advancedConfigurationInfo} params={[]} />,
-          },
-        ]}
-        ref_={modalRef}
+      <EditModal
+        uu5Tag={props.componentType.uu5Tag}
+        header={lsi.header}
+        props={props.componentProps}
+        tabList={tabList}
+        propInputMap={propInputMap}
+        onSave={handleSave}
+        onClose={props.onClose}
+        open
       />
     );
     //@@viewOff:render
@@ -258,5 +144,6 @@ const EditModalLazy = createComponentWithRef({
 });
 
 //viewOn:exports
+export { EditModalLazy };
 export default EditModalLazy;
 //viewOff:exports

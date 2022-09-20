@@ -6,9 +6,12 @@
   "namespace": "UuJokes",
   "spec": "uu5-lib; uu_appg01_devkit@5.0.0",
   "dependencies": {
-    "uu5g04": "^1.49.0",
+    "uu_jokesg01-core": "^0.1.0",
+    "uu_plus4u5g02-elements": "^1.9.3",
     "uu5g05": "^1.0.0",
-    "uu_jokesg01-core": "^0.1.0"
+    "uu5g05-bricks-support": "^1.12.1",
+    "uu5g05-editing": "^1.12.1",
+    "uu5g05-forms": "^1.12.1"
   },
   "uuBuildSettings": {
     "externals": {}

@@ -11,8 +11,10 @@ const imports = {
   "uu5g04-block-layout": "https://cdn.plus4u.net/uu-uu5g04/1.0.0/uu5g04-block-layout.js",
 
   uu5g05: "https://cdn.plus4u.net/uu-uu5g05/1.0.0/uu5g05.js",
+  "uu5g05-editing": "https://cdn.plus4u.net/uu-uu5g05/1.0.0/uu5g05-editing.min.js",
   "uu5g05-elements": "https://cdn.plus4u.net/uu-uu5g05/1.0.0/uu5g05-elements.js",
   "uu5g05-forms": "https://cdn.plus4u.net/uu-uu5g05/1.0.0/uu5g05-forms.js",
+  "uu5g05-bricks-support": "https://cdn.plus4u.net/uu-uu5g05/1.0.0/uu5g05-bricks-support.min.js",
   uu_i18ng01: "https://cdn.plus4u.net/uu-i18ng01/1.0.0/uu_i18ng01.min.js",
   uu5stringg01: "https://cdn.plus4u.net/uu-uu5stringg01/1.0.0/uu5stringg01.min.js",
 
@@ -30,7 +32,6 @@ const imports = {
   uu_territoryg01: "https://cdn.plus4u.net/uu-territoryg01/2.0.0/uu_territoryg01.min.js",
   "uu_territoryg01-bricks": "https://cdn.plus4u.net/uu-territoryg01/2.0.0/uu_territoryg01-bricks.min.js",
 
-  "uu5g04-bricks-editable": "https://cdn.plus4u.net/uu-uu5g04/1.0.0/uu5g04-bricks-editable.min.js",
   uu5codekitg01: "https://cdn.plus4u.net/uu-uu5codekitg01/1.0.0/uu5codekitg01.min.js",
   "uu5codekitg01-markdown": "https://cdn.plus4u.net/uu-uu5codekitg01/1.0.0/uu5codekitg01-markdown.min.js",
   uu5richtextg01: "https://cdn.plus4u.net/uu-uu5richtextg01/1.0.0/uu5richtextg01.min.js",
