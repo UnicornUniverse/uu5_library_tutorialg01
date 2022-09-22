@@ -24,11 +24,11 @@ const EditModal = createVisualComponent({
   },
   //@@viewOff:propTypes
 
-  render(props) {
+  render({ fallback, ...modalProps }) {
     //@@viewOn:render
     return (
-      <Suspense fallback={props.fallback}>
-        <EditModalLazy {...props} />
+      <Suspense fallback={fallback}>
+        <EditModalLazy {...modalProps} />
       </Suspense>
     );
     //@@viewOff:render

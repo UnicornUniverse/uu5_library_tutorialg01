@@ -17,7 +17,6 @@
     "basic": "základní",
     "width": "Šířka",
     "height": "Výška",
-    "widthHeightMessage": "Lze použít různé jednotky (px, em, vw, % a další). Pokud není jednotka specifikována, použijí se px.",
     "advancedConfiguration": "Pokročilá nastavení",
     "level": "Velikost nadpisu"
   }
