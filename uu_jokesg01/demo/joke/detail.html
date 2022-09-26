@@ -26,7 +26,7 @@
       import UuEcc from "uu_editablecomponentcontentg03";
 
       //@@viewOn:constants
-      const initSection = {
+      const section = {
         oid: "section-1",
         bid: "branch-1",
         awid: "awid-1",
@@ -66,12 +66,12 @@
       const Page = createVisualComponent({
         render() {
           //@@viewOn:private
-          const section = useRef(initSection);
+          const sectionRef = useRef(section);
 
           const handlerMap = {
-            sectionGet: () => section.current,
-            sectionLock: () => section.current,
-            sectionUpdate: (dtoIn) => (section.current = dtoIn),
+            sectionGet: () => sectionRef.current,
+            sectionLock: () => sectionRef.current,
+            sectionUpdate: (dtoIn) => (sectionRef.current = dtoIn),
           };
 
           const sectionDto = UuEcc.useSection({ cmdInfo: { handlerMap } });
