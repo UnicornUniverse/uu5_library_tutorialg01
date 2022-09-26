@@ -4,6 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>UuJokes.Joke.Detail Demo</title>
+    <script src="https://cdn.plus4u.net/uu-uu5loaderg01/1.0.0/uu5loaderg01.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.plus4u.net/uu-jokesg01/0.0.0/assets/example-config.js" crossorigin="anonymous"></script>
 
     <script>
       var uu5Environment = {
@@ -11,113 +13,92 @@
           "https://uuapp.plus4u.net/uu-plus4ugo-maing01/f34b62a867db4bd89490534bb26451ad/component/render",
       };
     </script>
-
-    <script src="https://cdn.plus4u.net/uu-uu5loaderg01/1.0.0/uu5loaderg01.min.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.plus4u.net/uu-jokesg01/0.0.0/assets/example-config.js" crossorigin="anonymous"></script>
   </head>
   <body>
     <div id="renderHere"></div>
 
     <script type="text/babel">
-      import UU5, { createComponent } from "uu5g04";
-      import Uu5Elements from "uu5g05-elements";
+      import { createVisualComponent, Utils, useRef } from "uu5g05";
       import { SpaProvider } from "uu_plus4u5g02";
       import { Spa, RouteBar, RouteHeader } from "uu_plus4u5g02-app";
-      import UuDcc from "uu_dynamiccomponentcontentg02";
-      import UuJokes from "uu_jokesg01";
-      import "uu5g04-bricks";
-      import "uu_plus4u5g02-elements";
+      import { UuGds } from "uu5g05-elements";
+      import { Config } from "uu5g05-dev";
+      import UuEcc from "uu_editablecomponentcontentg03";
 
-      UU5.Environment.trustedDomainRegexp = ".*";
-      UU5.Common.Tools.setLanguage("en");
+      //@@viewOn:constants
+      const initSection = {
+        oid: "section-1",
+        bid: "branch-1",
+        awid: "awid-1",
+        content: [
+          {
+            tag: "UuJokes.Joke.Detail",
+            props: {
+              baseUri: "https://uuapp.plus4u.net/uu-jokes-maing01/4ef6a7b01b5942ecbfb925b249af987f/",
+              oid: "6260fe0e77f6b500253bec93", // Create own joke and place its id here,
+              uu5Id: "123",
+            },
+          },
+        ],
+        readOnly: false,
+        authorUuIdentity: "6565-1",
+        authorName: "Martin Farkaš",
+        commitTs: Date.now(),
+        deleted: false,
+      };
+      //@@viewOff:constants
 
-      const DccComponent = createComponent({
-        mixins: [UU5.Common.BaseMixin, UU5.Common.ElementaryMixin, UU5.Common.CcrReaderMixin],
+      //@@viewOn:css
+      const Css = {
+        route: () =>
+          Config.Css.css({
+            paddingLeft: UuGds.SpacingPalette.getValue(["fixed", "g"]),
+            paddingRight: UuGds.SpacingPalette.getValue(["fixed", "g"]),
+          }),
+        section: () =>
+          Config.Css.css({
+            margin: "0 auto",
+            maxWidth: 1000,
+          }),
+      };
+      //@@viewOff:css
 
-        getDccLanguages_() {
-          return ["cs", "en"];
-        },
-
-        onDccDataChange_(data, doneFn) {
-          doneFn();
-        },
-
-        _fakeUpdate(data) {
-          return new Promise(() => data);
-        },
-
-        //@@viewOn:render
+      const Page = createVisualComponent({
         render() {
-          return (
-            <UuDcc.Bricks.Section
-              data={{ id: "aaaaaaaaaaaaaaaaaaaaaaaa", code: "111111111111111111111111", content: this.props.dccData }}
-              onUpdate={this._fakeUpdate}
-              readOnly={false}
-            />
-          );
-        },
-        //@@viewOff:render
-      });
+          //@@viewOn:private
+          const section = useRef(initSection);
 
-      const Page = createComponent({
-        render() {
-          // PROD uuJokes
-          const notHomeBaseUri = "https://uuapp.plus4u.net/uu-jokes-maing01/415f0820c0e54f14962611fda4586e53/";
-          const baseUri = "https://uuapp.plus4u.net/uu-jokes-maing01/4ef6a7b01b5942ecbfb925b249af987f/";
-          const oid = "6260fe0e77f6b500253bec93"; // Create own joke and place its id here
+          const handlerMap = {
+            sectionGet: () => section.current,
+            sectionLock: () => section.current,
+            sectionUpdate: (dtoIn) => (section.current = dtoIn),
+          };
 
-          const defaultProperties = (
-            <UU5.Bricks.Section header="Default Properties">
-              <DccComponent
-                dccData={`<uu5string/>
-                    <UuJokes.Joke.Detail baseUri="${baseUri}" oid="${oid}" uu5Id="123" />
-                  `}
-              />
-            </UU5.Bricks.Section>
-          );
-
-          const inline = (
-            <UU5.Bricks.Section header="nestingLevel = inline">
-              <DccComponent
-                dccData={`<uu5string/>
-                    <UuJokes.Joke.Detail baseUri="${baseUri}" oid="${oid}" uu5Id="123" nestingLevel="inline" />
-                  `}
-              />
-            </UU5.Bricks.Section>
-          );
-
-          const disabled = (
-            <UU5.Bricks.Section header="Disabled">
-              <DccComponent
-                dccData={`<uu5string/>
-                    <UuJokes.Joke.Detail baseUri="${baseUri}" oid="${oid}" uu5Id="123" disabled />
-                  `}
-              />
-            </UU5.Bricks.Section>
-          );
+          const sectionDto = UuEcc.useSection({ cmdInfo: { handlerMap } });
+          //@@viewOff:private
 
           return (
-            <SpaProvider baseUri={notHomeBaseUri}>
+            //@@viewOn:render
+            <SpaProvider skipAppWorkspaceProvider>
               <Spa>
-                <RouteBar>
-                  <RouteHeader title="UuJokes.Joke.Detail Demo" />
-                </RouteBar>
-                <UU5.Bricks.Container>
-                  <Uu5Elements.Tabs
-                    itemList={[
-                      { label: "Default Properties", children: defaultProperties },
-                      { label: "Inline", children: inline },
-                      { label: "Disabled", children: disabled },
-                    ]}
-                  />
-                </UU5.Bricks.Container>
+                <UuEcc.PageEditProvider>
+                  <RouteBar appActionList={[{ component: <UuEcc.PageEditButton /> }]}>
+                    <RouteHeader title="UuJokes.Joke.Detail Demo" />
+                  </RouteBar>
+                  <div className={Css.route()}>
+                    <div className={Css.section()}>
+                      <UuEcc.Section {...sectionDto} />
+                    </div>
+                  </div>
+                </UuEcc.PageEditProvider>
               </Spa>
             </SpaProvider>
+            //@@viewOff:render
           );
         },
       });
 
-      UU5.Common.DOM.render(<Page />, document.getElementById("renderHere"));
+      Utils.Dom.render(<Page />, document.getElementById("renderHere"));
     </script>
   </body>
 </html>
