@@ -7,6 +7,13 @@ let Calls = {
     return response.data;
   },
 
+  Category: {
+    list(dtoIn, baseUri) {
+      let commandUri = Calls.getCommandUri("category/list", baseUri);
+      return Calls.call("get", commandUri, dtoIn);
+    },
+  },
+
   Jokes: {
     load(dtoIn, baseUri) {
       const commandUri = Calls.getCommandUri("sys/uuAppWorkspace/load", baseUri);

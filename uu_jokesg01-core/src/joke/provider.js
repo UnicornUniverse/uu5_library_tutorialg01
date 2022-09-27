@@ -44,21 +44,35 @@ export const Provider = createComponent({
       }
 
       const jokeDtoIn = { id: props.oid };
-      const joke = await Calls.Joke.get(jokeDtoIn, props.baseUri);
+      let joke = await Calls.Joke.get(jokeDtoIn, props.baseUri);
 
-      if (!joke.image || props.skipImageLoad) {
-        return joke;
+      if (joke.categoryIdList.length) {
+        const categoryList = await Calls.Category.list({ idList: joke.categoryIdList }, props.baseUri);
+        joke.categoryList = categoryList.itemList;
       }
 
-      const imageDtoIn = { code: joke.image };
-      const imageFile = await Calls.Joke.getImage(imageDtoIn, props.baseUri);
-      return { ...joke, imageFile };
+      if (joke.image && !props.skipImageLoad) {
+        const imageDtoIn = { code: joke.image };
+        joke.imageFile = await Calls.Joke.getImage(imageDtoIn, props.baseUri);
+        joke.imageUrl = generateImageUrl(joke.imageFile);
+      }
+
+      return joke;
     }
 
     async function handleUpdate(values) {
       const dtoIn = { id: jokeDataObject.data.id, ...values };
-      const joke = await Calls.Joke.update(dtoIn, props.baseUri);
-      return { ...joke, imageFile: values.image };
+      let joke = await Calls.Joke.update(dtoIn, props.baseUri);
+
+      if (joke.categoryIdList.length) {
+        const categoryList = await Calls.Category.list({ idList: joke.categoryIdList }, props.baseUri);
+        joke.categoryList = categoryList.itemList;
+      }
+
+      joke.imageFile = values.image;
+      joke.imageUrl = values.image && generateImageUrl(values.image);
+
+      return joke;
     }
 
     async function handleAddRating(rating) {
@@ -75,8 +89,17 @@ export const Provider = createComponent({
 
     function mergeJoke(joke) {
       return (prevData) => {
-        return { ...joke, imageFile: prevData.imageFile };
+        return {
+          ...joke,
+          imageFile: prevData.imageFile,
+          imageUrl: prevData.imageUrl,
+          categoryList: prevData.categoryList,
+        };
       };
+    }
+
+    function generateImageUrl(imageFile) {
+      return URL.createObjectURL(imageFile);
     }
 
     useEffect(() => {
@@ -84,12 +107,12 @@ export const Provider = createComponent({
         const prevProps = prevPropsRef.current;
 
         // No change of baseUri and id = no reload is required
-        if (prevProps.baseUri === props.baseUri && prevPropsRef.current.oid === props.oid) {
+        if (prevProps.baseUri === props.baseUri && prevProps.oid === props.oid) {
           return;
         }
 
         // If there is another operation pending = we can't reload data
-        if (!jokeDataObject.handlerMap.load) {
+        if (jokeDataObject.state !== "ready") {
           return;
         }
 
@@ -97,13 +120,21 @@ export const Provider = createComponent({
           prevPropsRef.current = props;
           await jokeDataObject.handlerMap.load();
         } catch (error) {
-          console.error(error);
+          Provider.logger.error("Error while reloading data.", error);
           prevPropsRef.current = prevProps;
         }
       }
 
       checkPropsAndReload();
     }, [props, jokeDataObject]);
+
+    useEffect(() => {
+      // We don't use it to store reference on another React component
+      // eslint-disable-next-line uu5/hooks-exhaustive-deps
+      return () => URL.revokeObjectURL(jokeDataObject.data?.imageUrl);
+      // We want to trigger this effect only once.
+      // eslint-disable-next-line uu5/hooks-exhaustive-deps
+    }, []);
 
     // There is only 1 atribute now but we are ready for future expansion
     // HINT: Data are wrapped by object for future expansion of values with backward compatibility
