@@ -1,0 +1,66 @@
+{
+  "Errors": {
+    "defaultError": "Omlouváme se, opravdu nevíme, co se stalo. Pokud problém přetrvává, nahlašte prosím chybu na helpdesk",
+    "badRequest": "Omlouváme se, během zpracování požadavku nastala chyba",
+    "unauthorized": "Nemáte přístupová práva. Pokud si myslíte, že jde o chybu, kontaktujte prosím kompetentní osobu nebo pošlete požadavek na helpdesk",
+    "forbidden": "Nemáte přístupová práva. Pokud si myslíte, že jde o chybu, kontaktujte prosím kompetentní osobu nebo pošlete požadavek na helpdesk",
+    "notFound": "Požadavek nemohl být zpracován. Zkontrolujte prosím zadané URL",
+    "internal": "Nastala neočekávaná chyba. Opakujte požadavek a případně nahlašte problém na helpdesk",
+    "serviceUnavailable": "Služba není momentálně dostupná, zkuste to prosím později",
+    "requestTimeout": "Čas pro komunikaci se serverem vypršel. Zkuste to prosím později",
+    "baseNetworkError": "Chyba sítě - požadovaný zdroj není k dispozici a nebo neexistuje",
+    "uu-gateway-main/invalidRequest": "Požadavek nemohl být zpracován. Zkontrolujte prosím zadané URL",
+    "uu-app-workspace/forbiddenAwidSysState": "Workspace aplikace není v aktivním stavu a pravděpodobně na něm probíhá údržba. Zkuste to prosím znovu později",
+    "uu-app-workspace/forbiddenAsidSysState": "Instance aplikace není v aktivním stavu a pravděpodobně probíhá údržba. Zkuste to prosím znovu později",
+    "uu-jokes-main/category/delete/relatedJokesExist": "Kategorii nelze odstranit, protože jsou s ní spojeny některé vtipy. Odeberte kategorii z vtipů a zkuste to znovu.",
+    "uu-jokes-main/joke/addRating/userNotAuthorized": "Autor nemůže hodnotit vlastní vtipy",
+    "uu-jokes-main/joke/create/invalidImage": "Soubor obrázku není validní nebo podporovaný typ obrázku",
+    "uu-jokes-main/joke/get/jokeDoesNotExist": "Vtip neexistuje",
+    "uu-jokes-main/joke/update/invalidImage": "Soubor obrázku není validní nebo podporovaný typ obrázku",
+    "uujokescore-joke-provider/no-oid": "Není zadána property oid",
+    "uujokescore-preference-provider/no-uu5-id": "Není zadána povinná vlastnost Identifikátor komponenty (uu5Id)"
+  },
+  "UuJokesCore.Joke.DetailView": {
+    "info": "<uu5string/>Komponenta zobrazuje konkrétní vtip z databáze. Každý uživatel může vtip hodnotit (kromě autora), ale pouze autor a uživatelé s profilem <UU5.Bricks.Code>Authorities</UU5.Bricks.Code> můžou modifikovat obsah. Pro více podrobností navštivte dokumentaci komponenty <UU5.Bricks.Link href='https://uuapp.plus4u.net/uu-bookkit-maing01/71f8d7b5cfdc4336b0abfe47b3cb237b/book/page?code=UuJokesJokeDetail' target='_blank'>UuJokes.Joke.Detail</UU5.Bricks.Link>.",
+    "copyComponent": "Zkopírovat komponentu",
+    "copyComponentSuccess": "Komponenta zkopírována do schránky",
+    "update": "Upravit",
+    "hide": "Zrušit publikaci",
+    "show": "Zveřejnit",
+    "reloadData": "Aktualizovat data",
+    "configure": "Nastavit komponentu"
+  },
+  "UuJokesCore.Joke.DetailView.Content": {
+    "oneVotes": "%d hlas",
+    "fewVotes": "%d hlasy",
+    "otherVotes": "%d hlasů"
+  },
+  "UuJokesCore.Joke.DetailView.Header": {
+    "typeName": "Vtip",
+    "unpublished": "Nepublikován"
+  },
+  "UuJokesCore.Joke.DetailView.PreferenceModal": {
+    "showCategories": "Zobrazit kategorie",
+    "showAuthor": "Zobrazit autora",
+    "showCreationTime": "Zobrazit čas vytvoření",
+    "header": "Nastavit komponentu",
+    "info": "<uu5string/>Tento formulář umožňuje změnit konfiguraci zobrazených detailů vtipu. Můžete skrýt nebo zobrazit kategorie, autora nebo čas vytvoření vtipu. Úpravy jsou uloženy v aplikaci MyTerritory a použity během dalších návštěv této komponenty. Když komponentu zkopírujete, tak se zkopíruje i vaše oblíbená konfigurace. Pokud požadujete rozdílnou konfiguraci pro kopii, tak stačí změnit hodnotu vlastnosti <b>Identifikátor komponenty (uu5Id)</b>.",
+    "submit": "Uložit",
+    "cancel": "Cancel"
+  },
+  "UuJokesCore.Joke.DetailView.UpdateModal": {
+    "name": "Název",
+    "text": "Text",
+    "image": "Obrázek",
+    "category": "Kategorie",
+    "header": "Upravit vtip",
+    "info": "Můžete upravit vtip...",
+    "submit": "Upravit",
+    "cancel": "Zrušit",
+    "textOrFile": "Text nebo obrázek musí být vyplněn."
+  },
+  "UuJokesCore.Jokes.ContextBar": {
+    "territory": "Teritorium",
+    "description": "TODO Popis"
+  }
+}

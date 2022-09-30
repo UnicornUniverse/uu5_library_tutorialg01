@@ -1,7 +1,7 @@
 //@@viewOn:imports
 import { createVisualComponent } from "uu5g05";
 import { useSubApp } from "uu_plus4u5g02";
-import { createCopyTag } from "../utils/utils";
+import { createCopyTag, redirectToPlus4UGo } from "../utils/utils";
 import { Provider as JokesProvider, PermissionProvider } from "../jokes/jokes";
 import { Provider as PreferenceProvider } from "../preference/preference";
 import Config from "./config/config";
@@ -16,10 +16,14 @@ const STATICS = {
 };
 
 const DEFAULT_PROPS = {
-  ...Config.Types.Box.defaultProps,
   ...Config.Types.Inline.defaultProps,
+  ...Config.Types.Spot.defaultProps,
+  ...Config.Types.Box.defaultProps,
+  ...Config.Types.Area.defaultProps,
+  ...Config.Types.Identification.defaultProps,
   ...Config.Types.Preference.defaultProps,
   ...Config.Types.Detail.Preferences.defaultProps,
+  ...Config.Types.Detail.Properties.defaultProps,
 };
 
 export const Detail = createVisualComponent({
@@ -27,10 +31,14 @@ export const Detail = createVisualComponent({
 
   //@@viewOn:propTypes
   propTypes: {
-    ...Config.Types.Box.propTypes,
     ...Config.Types.Inline.propTypes,
+    ...Config.Types.Spot.propTypes,
+    ...Config.Types.Box.propTypes,
+    ...Config.Types.Area.propTypes,
+    ...Config.Types.Identification.propTypes,
     ...Config.Types.Preference.propTypes,
     ...Config.Types.Detail.Preferences.propTypes,
+    ...Config.Types.Detail.Properties.propTypes,
     baseUri: JokeProvider.propTypes.baseUri,
     oid: JokeProvider.propTypes.oid,
   },
@@ -52,19 +60,28 @@ export const Detail = createVisualComponent({
 
     function handleOnCopyComponent() {
       return createCopyTag(
-        "UuJokes.Joke.Detail",
-        props,
+        Config.DefaultBrickTags.JOKE_DETAIL,
+        { ...props, uu5Id: "${idHex32}" },
         ["baseUri", "oid", "showCategories", "showAuthor", "showCreationTime", "disableUserPreference", "uu5Id"],
         DEFAULT_PROPS
       );
+    }
+
+    function handleOpenToNewTab() {
+      const componentProps = { baseUri, oid, uu5Id };
+      redirectToPlus4UGo(Config.DefaultBrickTags.JOKE_DETAIL, componentProps, {
+        top: true,
+        baseUri,
+        languages: Config.SupportedLanguages,
+      });
     }
     //@@viewOff:private
 
     //@@viewOn:render
     return (
       <JokesProvider baseUri={baseUri}>
-        {({ subAppDataObject, systemDataObject }) => (
-          <PermissionProvider profileList={systemDataObject.data?.profileData.uuIdentityProfileList}>
+        {({ subAppDataObject, awscDataObject, systemDataObject, appWorkspace }) => (
+          <PermissionProvider profileList={systemDataObject.data?.profileData?.uuIdentityProfileList}>
             {(jokesPermission) => (
               <JokeProvider baseUri={baseUri} oid={oid}>
                 {({ jokeDataObject }) => (
@@ -79,11 +96,15 @@ export const Detail = createVisualComponent({
                     {({ preferenceDataObject }) => (
                       <DetailView
                         {...viewProps}
+                        baseUri={baseUri}
                         jokesDataObject={subAppDataObject}
+                        awscDataObject={awscDataObject}
                         jokeDataObject={jokeDataObject}
-                        jokesPermission={jokesPermission}
                         preferenceDataObject={preferenceDataObject}
+                        jokesPermission={jokesPermission}
+                        isHome={appWorkspace.isHome}
                         onCopyComponent={handleOnCopyComponent}
+                        onOpenToNewTab={handleOpenToNewTab}
                       />
                     )}
                   </PreferenceProvider>
