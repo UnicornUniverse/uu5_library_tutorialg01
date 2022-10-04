@@ -4,19 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>UuJokesCore.Joke.Detail Demo</title>
-
-    <script>
-      // prettier-ignore
-      if (!location.href.match(/^(about:|file:)/)) {
-        var bplCookie = document.cookie.match(/(^|;\s*)uu\.app\.bpl=([^;]+)/);
-        var bplSegmentCount = (bplCookie ? Number(bplCookie[2]) : null);
-        if (typeof bplSegmentCount !== "number" || isNaN(bplSegmentCount) || bplSegmentCount < 0) bplSegmentCount = 2;
-        var appBaseUrlPath = (location.pathname.split(/\//).slice(0,1+bplSegmentCount).join("/")+"/").replace(/\/+/g,"/").replace(/"/g,"");
-        var appAssetsRelativeUrlPath = "public/1.0.0/";
-        document.write('<base href="' + appBaseUrlPath + appAssetsRelativeUrlPath + '" data-uu-app-base="' + appBaseUrlPath + '" data-uu-app-assets-base="' + appAssetsRelativeUrlPath + '">');
-      }
-    </script>
-
     <script src="https://cdn.plus4u.net/uu-uu5loaderg01/1.0.0/uu5loaderg01.min.js" crossorigin="anonymous"></script>
     <script src="https://cdn.plus4u.net/uu-jokesg01/0.0.0/assets/example-config.js" crossorigin="anonymous"></script>
   </head>
@@ -28,11 +15,16 @@
       import { Block } from "uu5g05-elements";
       import { SpaProvider } from "uu_plus4u5g02";
       import { Spa, RouteBar, RouteHeader, RouteController } from "uu_plus4u5g02-app";
+      import { Config } from "uu5g05-dev";
       import UuJokesCore from "uu_jokesg01-core";
 
       const notHomeBaseUri = "https://uuapp.plus4u.net/uu-jokes-maing01/415f0820c0e54f14962611fda4586e53/";
       const baseUri = "https://uuapp.plus4u.net/uu-jokes-maing01/4ef6a7b01b5942ecbfb925b249af987f/";
       const oid = "61fba534a8963500250dc7fb"; // Create own joke and place its id here
+
+      const Css = {
+        container: () => Config.Css.css({ margin: "auto", maxWidth: 500 }),
+      };
 
       const Page = createVisualComponent({
         render() {
@@ -42,28 +34,23 @@
                 <RouteBar>
                   <RouteHeader title="UuJokesCore.Joke.Detail Demo" />
                 </RouteBar>
-                <RouteController>
-                  <Block header="Inline" headerType="title" className={exampleCss()}>
-                    <UuJokesCore.Joke.Detail
-                      baseUri={baseUri}
-                      oid={oid}
-                      nestingLevel="inline"
-                      collapsible={false}
-                      uu5Id="123"
-                    />
-                  </Block>
-                  <Block header="Default Properties" headerType="title" className={exampleCss()} collapsible={false}>
-                    <UuJokesCore.Joke.Detail baseUri={baseUri} oid={oid} uu5Id="123" />
-                  </Block>
-                </RouteController>
+                <Block header="Inline" headerType="title" className={Css.container()}>
+                  <UuJokesCore.Joke.Detail
+                    baseUri={baseUri}
+                    oid={oid}
+                    nestingLevel="inline"
+                    collapsible={false}
+                    uu5Id="123"
+                  />
+                </Block>
+                <Block header="Default Properties" headerType="title" className={Css.container()} collapsible={false}>
+                  <UuJokesCore.Joke.Detail baseUri={baseUri} oid={oid} uu5Id="123" />
+                </Block>
               </Spa>
             </SpaProvider>
           );
         },
       });
-
-      const Css = Utils.Css.createCssModule("uujokescore-demo-detail");
-      const exampleCss = () => Css.css`margin:auto;max-width:500px`;
 
       Utils.Dom.render(<Page />, document.getElementById("renderHere"));
     </script>

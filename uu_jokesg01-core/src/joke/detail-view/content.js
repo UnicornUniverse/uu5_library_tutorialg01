@@ -17,37 +17,37 @@ const Css = {
       margin: "auto",
     }),
 
-  text: (parent) =>
+  text: (wrapper) =>
     Config.Css.css({
       display: "block",
-      marginLeft: parent.paddingLeft,
-      marginRight: parent.paddingRight,
-      marginTop: parent.paddingTop,
-      marginBottom: parent.paddingTop,
+      marginLeft: wrapper.paddingLeft,
+      marginRight: wrapper.paddingRight,
+      marginTop: wrapper.paddingTop,
+      marginBottom: wrapper.paddingTop,
     }),
 
   infoLine: () => Config.Css.css({}),
 
-  infoSection: (parent) =>
+  infoSection: (wrapper) =>
     Config.Css.css({
       display: "flex",
       flexDirection: "column",
       gap: UuGds.SpacingPalette.getValue(["fixed", "b"]),
-      marginLeft: parent.paddingLeft,
-      marginRight: parent.paddingRight,
-      marginTop: parent.paddingBottom,
-      marginBottom: parent.paddingBottom,
+      marginLeft: wrapper.paddingLeft,
+      marginRight: wrapper.paddingRight,
+      marginTop: wrapper.paddingBottom,
+      marginBottom: wrapper.paddingBottom,
     }),
 
-  footer: (parent) =>
+  footer: (wrapper) =>
     Config.Css.css({
       display: "flex",
       justifyContent: "space-between",
       alignItems: "center",
-      paddingTop: parent.paddingBottom,
-      paddingBottom: parent.paddingBottom,
-      paddingLeft: parent.paddingLeft,
-      paddingRight: parent.paddingRight,
+      paddingTop: wrapper.paddingBottom,
+      paddingBottom: wrapper.paddingBottom,
+      paddingLeft: wrapper.paddingLeft,
+      paddingRight: wrapper.paddingRight,
       // ISSUE Block + Modal - should pass required borderRadius to children
       // https://uuapp.plus4u.net/uu-sls-maing01/e80acdfaeb5d46748a04cfc7c10fdf4e/issueDetail?id=62e160840b17bf002ae9c910
       borderBottomLeftRadius: 8,
@@ -66,7 +66,7 @@ export const Content = createVisualComponent({
     jokeDataObject: PropTypes.object.isRequired,
     jokesPermission: PropTypes.object.isRequired,
     preferenceDataObject: PropTypes.object.isRequired,
-    parentStyle: PropTypes.shape({
+    wrapperStyle: PropTypes.shape({
       paddingTop: PropTypes.unit,
       paddingBottom: PropTypes.unit,
       paddingRight: PropTypes.unit,
@@ -111,7 +111,7 @@ export const Content = createVisualComponent({
             segment="content"
             type="medium"
             colorScheme="building"
-            className={Css.text(props.parentStyle)}
+            className={Css.text(props.wrapperStyle)}
           >
             {joke.text}
           </Text>
@@ -121,7 +121,7 @@ export const Content = createVisualComponent({
 
         <Line significance="subdued" />
 
-        <div className={Css.infoSection(props.parentStyle)}>
+        <div className={Css.infoSection(props.wrapperStyle)}>
           {showCategories && joke.categoryList?.length > 0 && (
             <InfoLine>{joke.categoryList.map((c) => c.name).join(",")}</InfoLine>
           )}
@@ -135,7 +135,7 @@ export const Content = createVisualComponent({
           <InfoLine>{getRatingCountLsi(joke.ratingCount)}</InfoLine>
         </div>
 
-        <Box significance="distinct" className={Css.footer(props.parentStyle)}>
+        <Box significance="distinct" className={Css.footer(props.wrapperStyle)}>
           <span>{showAuthor && <PersonItem uuIdentity={joke.uuIdentity} />}</span>
           <UU5.Bricks.Rating
             value={joke.averageRating}

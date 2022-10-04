@@ -90,7 +90,7 @@ export const AreaView = createVisualComponent({
                 customErrorLsi={errorsLsi}
               >
                 {/* HINT: We need to trigger Content render from last Resolver to have all data loaded before setup of Content properties */}
-                {() => <Content {...contentProps} parentStyle={block.style} />}
+                {() => <Content {...contentProps} wrapperStyle={block.style} />}
               </DataObjectStateResolver>
             </DataObjectStateResolver>
           </DataObjectStateResolver>
