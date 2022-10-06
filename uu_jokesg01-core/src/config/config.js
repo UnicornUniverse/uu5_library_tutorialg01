@@ -16,8 +16,5 @@ export default {
     process.env.NAME + "/" + process.env.OUTPUT_NAME + "@" + process.env.VERSION // this helps preserve proper order of styles among loaded libraries
   ),
   Types,
-  DefaultBrickTags: {
-    JOKE_DETAIL: "UuJokes.Joke.Detail",
-  },
   SupportedLanguages: ["en", "cs"],
 };

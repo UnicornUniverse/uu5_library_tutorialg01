@@ -15,16 +15,13 @@ export const PreferenceModal = createVisualComponent({
   //@@viewOn:propTypes
   propTypes: {
     preferenceDataObject: PropTypes.object.isRequired,
-    shown: PropTypes.bool,
     onSaveDone: PropTypes.func,
     onCancel: PropTypes.func,
   },
   //@@viewOff:propTypes
 
   //@@viewOn:defaultProps
-  defaultProps: {
-    shown: false,
-  },
+  defaultProps: {},
   //@@viewOff:defaultProps
 
   render(props) {
@@ -60,7 +57,7 @@ export const PreferenceModal = createVisualComponent({
 
     return (
       <Form.Provider onSubmit={handleSubmit} layout="1:2">
-        <Modal header={lsi.header} info={<Lsi lsi={lsi.info} />} open={props.shown} footer={formControls}>
+        <Modal header={lsi.header} info={<Lsi lsi={lsi.info} />} open={true} footer={formControls}>
           <Form.View>
             <FormCheckbox
               label={lsi.showCategories}

@@ -1,8 +1,8 @@
 import { PropTypes } from "uu5g05";
 
 // Component's public properties stored as user preference property in uuMT
-// Component -> PreferenceProvider -> View -> AreaView -> Content -> ContentView
-// Component -> PreferenceProvider -> View -> InlineView -> InlineModal -> Content -> ContentView
+// Component -> PreferenceProvider -> View -> AreaView -> Content
+// Component -> PreferenceProvider -> View -> DetailModal -> Content
 const Preferences = {
   propTypes: {
     showCategories: PropTypes.bool,
@@ -17,8 +17,8 @@ const Preferences = {
 };
 
 // Component's other public properties that are not stored as user preference property
-// Component -> View -> AreaView -> Content -> ContentView
-// Component -> View -> InlineView -> InlineModal -> ContentView
+// Component -> View -> AreaView -> Content
+// Component -> View -> DetailModal -> Content
 const Properties = {
   propTypes: {
     showDelete: PropTypes.bool,
@@ -29,8 +29,9 @@ const Properties = {
 };
 
 // Async data objects & lists required by Content
+// Provider -> View -> InlineView
 // Provider -> View -> AreaView -> Content
-// Provider -> View -> InlineView -> InlineModal -> Content
+// Provider -> View -> DetailModal -> Content
 const AsyncData = {
   propTypes: {
     jokeDataObject: PropTypes.object.isRequired,
@@ -52,9 +53,9 @@ const AsyncData = {
 };
 
 // Internal properties
+// View -> InlineView
 // View -> AreaView -> Content
 // View -> DetailModal -> Content
-// View -> InlineView
 const Internals = {
   propTypes: {
     onDetail: PropTypes.func,

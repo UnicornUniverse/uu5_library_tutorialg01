@@ -48,10 +48,8 @@ const Css = {
       paddingBottom: wrapper.paddingBottom,
       paddingLeft: wrapper.paddingLeft,
       paddingRight: wrapper.paddingRight,
-      // ISSUE Block + Modal - should pass required borderRadius to children
-      // https://uuapp.plus4u.net/uu-sls-maing01/e80acdfaeb5d46748a04cfc7c10fdf4e/issueDetail?id=62e160840b17bf002ae9c910
-      borderBottomLeftRadius: 8,
-      borderBottomRightRadius: 8,
+      borderBottomLeftRadius: "inherit",
+      borderBottomRightRadius: "inherit",
     }),
 };
 //@@viewOff:css

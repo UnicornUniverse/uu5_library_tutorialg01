@@ -14,7 +14,7 @@ import importLsi from "../lsi/import-lsi";
 const STATICS = {
   //@@viewOn:statics
   uu5Tag: Config.TAG + "DetailView",
-  nestingLevel: ["area", "box", "spot", "inline"],
+  nestingLevel: ["area", "inline"],
   //@@viewOff:statics
 };
 
@@ -24,10 +24,7 @@ const DetailView = createVisualComponent({
   //@@viewOn:propTypes
   propTypes: {
     ...Config.Types.Inline.propTypes,
-    ...Config.Types.Spot.propTypes,
-    ...Config.Types.Box.propTypes,
     ...Config.Types.Area.propTypes,
-    ...Config.Types.IdentificationData.propTypes,
     ...Config.Types.Detail.AsyncData.propTypes,
     ...Config.Types.Detail.Properties.propTypes,
   },
@@ -36,10 +33,7 @@ const DetailView = createVisualComponent({
   //@@viewOn:defaultProps
   defaultProps: {
     ...Config.Types.Inline.defaultProps,
-    ...Config.Types.Spot.defaultProps,
-    ...Config.Types.Box.defaultProps,
     ...Config.Types.Area.defaultProps,
-    ...Config.Types.IdentificationData.defaultProps,
     ...Config.Types.Detail.AsyncData.defaultProps,
     ...Config.Types.Detail.Properties.defaultProps,
   },
@@ -182,7 +176,6 @@ const DetailView = createVisualComponent({
             baseUri={props.baseUri}
             onSaveDone={handleUpdateDone}
             onCancel={handleUpdateCancel}
-            shown
           />
         )}
         {isPreferenceModal && (
@@ -190,7 +183,6 @@ const DetailView = createVisualComponent({
             preferenceDataObject={props.preferenceDataObject}
             onSaveDone={handlePreferenceDone}
             onCancel={handlePreferenceCancel}
-            shown
           />
         )}
       </>

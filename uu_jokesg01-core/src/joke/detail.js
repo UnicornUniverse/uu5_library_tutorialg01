@@ -17,10 +17,7 @@ const STATICS = {
 
 const DEFAULT_PROPS = {
   ...Config.Types.Inline.defaultProps,
-  ...Config.Types.Spot.defaultProps,
-  ...Config.Types.Box.defaultProps,
   ...Config.Types.Area.defaultProps,
-  ...Config.Types.Identification.defaultProps,
   ...Config.Types.Preference.defaultProps,
   ...Config.Types.Detail.Preferences.defaultProps,
   ...Config.Types.Detail.Properties.defaultProps,
@@ -32,10 +29,7 @@ export const Detail = createVisualComponent({
   //@@viewOn:propTypes
   propTypes: {
     ...Config.Types.Inline.propTypes,
-    ...Config.Types.Spot.propTypes,
-    ...Config.Types.Box.propTypes,
     ...Config.Types.Area.propTypes,
-    ...Config.Types.Identification.propTypes,
     ...Config.Types.Preference.propTypes,
     ...Config.Types.Detail.Preferences.propTypes,
     ...Config.Types.Detail.Properties.propTypes,
@@ -60,7 +54,7 @@ export const Detail = createVisualComponent({
 
     function handleOnCopyComponent() {
       return createCopyTag(
-        Config.DefaultBrickTags.JOKE_DETAIL,
+        "UuJokes.Joke.Detail",
         { ...props, uu5Id: "${idHex32}" },
         ["baseUri", "oid", "showCategories", "showAuthor", "showCreationTime", "disableUserPreference", "uu5Id"],
         DEFAULT_PROPS
@@ -69,7 +63,7 @@ export const Detail = createVisualComponent({
 
     function handleOpenToNewTab() {
       const componentProps = { baseUri, oid, uu5Id };
-      redirectToPlus4UGo(Config.DefaultBrickTags.JOKE_DETAIL, componentProps, {
+      redirectToPlus4UGo("UuJokes.Joke.Detail", componentProps, {
         top: true,
         baseUri,
         languages: Config.SupportedLanguages,

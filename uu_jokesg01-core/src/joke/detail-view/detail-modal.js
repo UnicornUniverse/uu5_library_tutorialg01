@@ -20,7 +20,6 @@ export const DetailModal = createVisualComponent({
     ...Config.Types.DetailModal.propTypes,
     ...Config.Types.Detail.AsyncData.propTypes,
     ...Config.Types.Detail.Internals.propTypes,
-    ...Config.Types.Detail.Properties.propTypes,
   },
   //@@viewOff:propTypes
 
@@ -29,25 +28,12 @@ export const DetailModal = createVisualComponent({
     ...Config.Types.DetailModal.defaultProps,
     ...Config.Types.Detail.AsyncData.defaultProps,
     ...Config.Types.Detail.Internals.defaultProps,
-    ...Config.Types.Detail.Properties.defaultProps,
   },
   //@@viewOff:defaultProps
 
   render(props) {
     //@@viewOn:private
     const errorsLsi = useLsi(importLsi, ["Errors"]);
-
-    useEffect(() => {
-      if (
-        props.jokeDataObject.data?.image &&
-        !props.jokeDataObject.data.imageUrl &&
-        props.jokeDataObject.state === "ready"
-      ) {
-        props.jokeDataObject.handlerMap
-          .getImage(props.jokeDataObject.data)
-          .catch((error) => DetailModal.logger.error("Error loading image", error));
-      }
-    }, [props.jokeDataObject]);
 
     useEffect(() => {
       async function checkDataAndLoad() {
@@ -68,7 +54,6 @@ export const DetailModal = createVisualComponent({
     const {
       header,
       info,
-      shown,
       actionList,
       awscDataObject,
       isHome,
@@ -84,7 +69,7 @@ export const DetailModal = createVisualComponent({
       <IdentificationModal
         header={headerElement}
         info={<Lsi lsi={info} />}
-        open={shown}
+        open={true}
         onClose={onClose}
         actionList={actionList}
         disabled={props.disabled}
@@ -103,7 +88,7 @@ export const DetailModal = createVisualComponent({
               customErrorLsi={errorsLsi}
             >
               <DataObjectStateResolver dataObject={props.preferenceDataObject} customErrorLsi={errorsLsi}>
-                {() => <Content {...contentProps} parentStyle={modal.style} />}
+                {() => <Content {...contentProps} wrapperStyle={modal.style} />}
               </DataObjectStateResolver>
             </DataObjectStateResolver>
           </DataObjectStateResolver>
