@@ -203,10 +203,11 @@ function getActions(
     props.preferenceDataObject.data !== null;
 
   const actionList = [];
-  const canManage = props.jokesPermission.joke.canManage(props.jokeDataObject.data);
-  const canUpdateVisibility = props.jokesPermission.joke.canUpdateVisibility();
 
   if (isDataLoaded) {
+    const canManage = props.jokesPermission.joke.canManage(props.jokeDataObject.data);
+    const canUpdateVisibility = props.jokesPermission.joke.canUpdateVisibility();
+
     if (canManage) {
       actionList.push({
         icon: "mdi-pencil",
