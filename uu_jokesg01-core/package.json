@@ -4,7 +4,7 @@
   "description": "The uuJokes library contains reference components for educational purposes.",
   "license": "License Commercial",
   "namespace": "UuJokesCore",
-  "spec": "uu5-lib; uu_appg01_devkit@5.0.0",
+  "spec": "uu5-lib; uu_appg01_devkit@5.6.1",
   "dependencies": {
     "uu_plus4u5g01": "^4.24.7",
     "uu_plus4u5g02": "^1.1.0",
@@ -33,7 +33,9 @@
     "prettify": "uu_appg01_devkit prettify",
     "vulnerabilityScan": "uu_appg01_devkit vulnerabilityScan",
     "generate": "uu_appg01_devkit generate",
-    "uuAppDevKitUpgrade": "uu_appg01_devkit uuAppDevKitUpgrade"
+    "uuAppDevKitUpgrade": "uu_appg01_devkit uuAppDevKitUpgrade",
+    "lsiExport": "uu_appg01_devkit lsiExport",
+    "lsiImport": "uu_appg01_devkit lsiImport"
   },
   "main": "src/index.js",
   "files": [
