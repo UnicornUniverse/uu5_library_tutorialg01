@@ -144,7 +144,7 @@ const DetailView = createVisualComponent({
 
     //@@viewOn:render
     const currentNestingLevel = Utils.NestingLevel.getNestingLevel(props, STATICS);
-    const [elementProps, contentProps] = Utils.VisualComponent.splitProps(props);
+    const { elementProps, componentProps } = Utils.VisualComponent.splitProps(props);
 
     const actionList = getActions(props, lsi, {
       handleReload,
@@ -155,7 +155,7 @@ const DetailView = createVisualComponent({
     });
 
     let viewProps = {
-      ...contentProps,
+      ...componentProps,
       info: lsi.info,
       actionList,
       disabled: disabled || props.disabled,
