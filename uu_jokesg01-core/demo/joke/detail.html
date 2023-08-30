@@ -8,9 +8,16 @@
     <script src="https://cdn.plus4u.net/uu-jokesg01/0.0.0/assets/example-config.js" crossorigin="anonymous"></script>
 
     <script>
+      // prettier-ignore
       var uu5Environment = {
-        uu5g05_componentUveUri:
-          "https://uuapp.plus4u.net/uu-plus4ugo-maing01/f34b62a867db4bd89490534bb26451ad/component/render",
+        uu5g05_trustedUriRegExp: ".*",
+        uu5g05_componentUveUri: "https://uuapp-dev.plus4u.net/uu-plus4ugo-maing01/00000c3f57074bfcb759aba2d562e013/component/render",
+        uu_app_oidc_providers_oidcg02_uri: "https://uuapp-dev.plus4u.net/uu-oidc-maing02/eca71064ecce44b0a25ce940eb8f053d/oidc",
+        uu5g05_libraryRegistryBaseUri: "https://uuapp-dev.plus4u.net/uu-applibraryregistry-maing01/000008ad5570455e83857a394f9a21c9",
+        uu_plus4u5g02_identityManagementBaseUri: "https://uuapp-dev.plus4u.net/uu-identitymanagement-maing01/58ceb15c275c4b31bfe0fc9768aa6a9c",
+        uu_plus4u5g02_commonServicesBaseUri: "https://uuapp-dev.plus4u.net/uu-commonservices-maing01/00000b33c474420aa887c972097b8024",
+        uu_plus4u5g02_peopleBaseUri: "https://uuapp-dev.plus4u.net/uu-plus4upeople-maing01/0000004723544d1ab0b74000d9f7671c",
+        uu_plus4u5g02_organizationBaseUri: "https://uuapp-dev.plus4u.net/uu-plus4uorganization-maing01/00000e17cfda49f49db73ed53ac8e4cf",
       };
     </script>
   </head>
@@ -25,9 +32,9 @@
       import { Config } from "uu5g05-dev";
       import UuJokesCore from "uu_jokesg01-core";
 
-      const notHomeBaseUri = "https://uuapp.plus4u.net/uu-jokes-maing01/415f0820c0e54f14962611fda4586e53/";
-      const baseUri = "https://uuapp.plus4u.net/uu-jokes-maing01/4ef6a7b01b5942ecbfb925b249af987f/";
-      const oid = "633a8aabc9eda6002869b3d9"; // Create own joke and place its id here
+      const notHomeBaseUri = "https://uuapp-dev.plus4u.net/uu-dockit-maing02/2bc099c124cf48bcb28662c6bf67e5bc/";
+      const baseUri = "https://uuapp-dev.plus4u.net/uu-jokes-maing01/9713389102e4479ba896e3abb690056c/";
+      const oid = "64ed82d0f6b7ae00281f74ab"; // Create own joke and place its id here
 
       const Css = {
         container: () => Config.Css.css({ margin: "auto", maxWidth: 500 }),
