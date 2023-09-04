@@ -15,7 +15,7 @@ function addPrefixToParams(params) {
 export function redirectToPlus4UGo(uu5Tag, componentProps, goParams) {
   const goPrefixedParams = addPrefixToParams(goParams);
   const query = new URLSearchParams({ _uu5Tag: uu5Tag, ...componentProps, ...goPrefixedParams });
-  const plus4uGoUri = new URL(Environment.get("uu5g05_componentUveUri"));
+  const plus4uGoUri = new URL(Environment.componentUveUri);
   plus4uGoUri.search = query.toString();
   window.open(plus4uGoUri.toString());
 }
