@@ -1,6 +1,7 @@
 {
   "name": "uu5_library_tutorialg01",
   "image": "mcr.microsoft.com/devcontainers/javascript-node:16",
+  "runArgs": ["--name=uu5_library_tutorialg01"],
   "forwardPorts": [4321, 4322],
   "mounts": [
     "source=uu5_library_tutorialg01-node_modules,target=${containerWorkspaceFolder}/node_modules,type=volume"
